@@ -8,16 +8,15 @@
 }
 
 .title-label {
-    -fx-font-size: 46px;
+    -fx-font-size: 38px;
     -fx-font-weight: bold;
     -fx-text-fill: #f2b134;
-    -fx-effect: dropshadow(gaussian, rgba(242,177,52,0.35), 18, 0.25, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(242,177,52,0.35), 16, 0.25, 0, 0);
 }
 
 .subtitle-label {
     -fx-font-size: 13px;
     -fx-text-fill: #9aa0b4;
-    -fx-padding: 0 0 18 0;
 }
 
 .selector-panel {
@@ -26,22 +25,23 @@
     -fx-border-radius: 18;
     -fx-border-color: rgba(242,177,52,0.20);
     -fx-border-width: 1;
-    -fx-padding: 26;
+    -fx-padding: 20;
 }
 
 .section-label {
-    -fx-font-size: 14px;
+    -fx-font-size: 15px;
     -fx-text-fill: #e8e8f0;
     -fx-font-weight: bold;
 }
 
+/* --- Tarjetas de selección --- */
 .player-card {
     -fx-background-color: #1b1c33;
     -fx-background-radius: 14;
     -fx-border-color: #2c2d4a;
     -fx-border-radius: 14;
     -fx-border-width: 2;
-    -fx-padding: 18 22 18 22;
+    -fx-padding: 14 20 14 20;
     -fx-cursor: hand;
 }
 
@@ -66,23 +66,24 @@
 }
 
 .player-card-number {
-    -fx-font-size: 26px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: #f2b134;
 }
 
 .player-card-label {
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
     -fx-text-fill: #9aa0b4;
 }
 
+/* --- Botón principal --- */
 .start-button {
     -fx-background-color: #c1121f;
     -fx-text-fill: white;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-background-radius: 30;
-    -fx-padding: 14 50 14 50;
+    -fx-padding: 12 44 12 44;
     -fx-cursor: hand;
 }
 
@@ -94,4 +95,48 @@
     -fx-background-color: #2a2534;
     -fx-text-fill: #6d6d80;
     -fx-opacity: 1.0;
+}
+
+/* ===== Vista de juego ===== */
+
+.machine-column {
+    -fx-alignment: center;
+}
+
+.player-name-label {
+    -fx-text-fill: #9aa0b4;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.card-back {
+    -fx-min-width: 42px;
+    -fx-min-height: 58px;
+    -fx-background-color: #0f3460;
+    -fx-background-radius: 8;
+    -fx-border-color: #f2b134;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+}
+
+.card-face-red, .card-face-black {
+    -fx-min-width: 46px;
+    -fx-min-height: 64px;
+    -fx-alignment: center;
+    -fx-background-color: #1b1c33;
+    -fx-background-radius: 8;
+    -fx-border-color: #2c2d4a;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.card-face-red { -fx-text-fill: #e94560; }
+.card-face-black { -fx-text-fill: #f4f4f8; }
+
+.table-card {
+    -fx-min-width: 68px;
+    -fx-min-height: 94px;
+    -fx-font-size: 22px;
 }

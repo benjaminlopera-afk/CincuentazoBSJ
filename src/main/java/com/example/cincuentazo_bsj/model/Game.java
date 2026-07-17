@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+    private static final int INITIAL_HAND_SIZE = 4;
+
     private final Deck deck;
     private final Table table;
     private final List<Player> players;
@@ -20,6 +22,22 @@ public class Game {
         for (int i = 1; i <= machineCount; i++) {
             players.add(new MachinePlayer("Máquina " + i));
         }
+    }
+
+    public void startGame() {
+        deck.buildFullDeck();
+        deck.shuffle();
+
+        for (Player player : players) {
+            for (int i = 0; i < INITIAL_HAND_SIZE; i++) {
+                player.getHand().add(deck.drawCard());
+            }
+        }
+
+        Card initialCard = deck.drawCard();
+        initialCard.setFaceUp(true);
+        table.getPlayedCards().add(initialCard);
+        table.setSum(initialCard.getInitialTableValue());
     }
 
     public Deck getDeck() { return deck; }

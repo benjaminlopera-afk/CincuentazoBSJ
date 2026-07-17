@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.cincuentazo_bsj.controllers.GameController">
+            fx:controller="com.example.cincuentazo_bsj.controllers.GameController"
+            styleClass="root-background"
+            stylesheets="@../../../Styles.css"
+            prefWidth="759.0" prefHeight="549.0">
+
+    <top>
+        <VBox fx:id="machinesBox" alignment="CENTER" spacing="14">
+            <padding><Insets top="20" bottom="10"/></padding>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="8">
+            <Label text="MESA" styleClass="section-label"/>
+            <Label fx:id="tableCardLabel" styleClass="card-face-black table-card"/>
+            <Label fx:id="tableSumLabel" text="Suma: 0" styleClass="subtitle-label"/>
+            <Label fx:id="deckCountLabel" text="Mazo: 0" styleClass="subtitle-label"/>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox fx:id="humanHandBox" alignment="CENTER" spacing="12">
+            <padding><Insets top="10" bottom="20"/></padding>
+        </HBox>
+    </bottom>
+
 </BorderPane>
