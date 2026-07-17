@@ -14,6 +14,14 @@ public class Game {
         this.players = new ArrayList<>();
     }
 
+    public void initializePlayers(int machineCount) {
+        players.clear();
+        players.add(new HumanPlayer("Jugador"));
+        for (int i = 1; i <= machineCount; i++) {
+            players.add(new MachinePlayer("Máquina " + i));
+        }
+    }
+
     public Deck getDeck() { return deck; }
     public Table getTable() { return table; }
     public List<Player> getPlayers() { return players; }

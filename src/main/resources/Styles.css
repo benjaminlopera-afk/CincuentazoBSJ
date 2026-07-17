@@ -1,0 +1,97 @@
+/* ===== Paleta ===== */
+/* Fondo:      #0b0c1a -> #14152b (azul carbón, mesa nocturna)   */
+/* Acento 1:   #f2b134 (dorado - fichas / selección)             */
+/* Acento 2:   #c1121f (rojo carta - acción principal)           */
+
+.root-background {
+    -fx-background-color: linear-gradient(to bottom right, #0b0c1a, #14152b);
+}
+
+.title-label {
+    -fx-font-size: 46px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f2b134;
+    -fx-effect: dropshadow(gaussian, rgba(242,177,52,0.35), 18, 0.25, 0, 0);
+}
+
+.subtitle-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #9aa0b4;
+    -fx-padding: 0 0 18 0;
+}
+
+.selector-panel {
+    -fx-background-color: rgba(255,255,255,0.03);
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: rgba(242,177,52,0.20);
+    -fx-border-width: 1;
+    -fx-padding: 26;
+}
+
+.section-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #e8e8f0;
+    -fx-font-weight: bold;
+}
+
+.player-card {
+    -fx-background-color: #1b1c33;
+    -fx-background-radius: 14;
+    -fx-border-color: #2c2d4a;
+    -fx-border-radius: 14;
+    -fx-border-width: 2;
+    -fx-padding: 18 22 18 22;
+    -fx-cursor: hand;
+}
+
+.player-card .radio {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-mark-color: transparent;
+}
+
+.player-card:hover {
+    -fx-border-color: #f2b134;
+}
+
+.player-card:selected {
+    -fx-background-color: #f2b134;
+    -fx-border-color: #f2b134;
+}
+
+.player-card:selected .player-card-number,
+.player-card:selected .player-card-label {
+    -fx-text-fill: #0b0c1a;
+}
+
+.player-card-number {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f2b134;
+}
+
+.player-card-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #9aa0b4;
+}
+
+.start-button {
+    -fx-background-color: #c1121f;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 30;
+    -fx-padding: 14 50 14 50;
+    -fx-cursor: hand;
+}
+
+.start-button:hover {
+    -fx-background-color: #e21b2b;
+}
+
+.start-button:disabled {
+    -fx-background-color: #2a2534;
+    -fx-text-fill: #6d6d80;
+    -fx-opacity: 1.0;
+}
