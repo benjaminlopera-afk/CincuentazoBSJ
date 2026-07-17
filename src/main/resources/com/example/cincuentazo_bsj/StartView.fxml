@@ -13,18 +13,19 @@
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.example.cincuentazo_bsj.controllers.StartController"
            styleClass="root-background"
-           stylesheets="@../../../Styles.css">
+           stylesheets="@../../../Styles.css"
+           prefWidth="759.0" prefHeight="549.0">
 
-    <VBox alignment="CENTER" spacing="12" maxWidth="540">
+    <VBox alignment="CENTER" spacing="16" maxWidth="520">
         <padding>
-            <Insets top="50" right="40" bottom="50" left="40"/>
+            <Insets top="30" right="40" bottom="30" left="40"/>
         </padding>
 
         <Label text="♠ CINCUENTAZO ♥" styleClass="title-label"/>
         <Label text="No excedas la suma de 50 en la mesa. Sé el último en pie."
                styleClass="subtitle-label"/>
 
-        <VBox spacing="18" alignment="CENTER" styleClass="selector-panel">
+        <VBox spacing="16" alignment="CENTER" styleClass="selector-panel">
             <Label text="¿Contra cuántas máquinas quieres jugar?" styleClass="section-label"/>
 
             <HBox spacing="16" alignment="CENTER">
