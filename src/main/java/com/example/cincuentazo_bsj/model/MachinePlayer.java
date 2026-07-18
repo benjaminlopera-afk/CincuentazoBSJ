@@ -8,6 +8,11 @@ public class MachinePlayer extends Player {
 
     @Override
     public Card selectCard(Table table) {
-        return null; // Se implementa en HU-3
+        for (Card card : hand) {
+            if (card.getBestValueFor(table.getSum()) != Integer.MIN_VALUE) {
+                return card;
+            }
+        }
+        return null; // Ninguna carta jugable -> se resuelve en HU-5 (eliminación)
     }
 }
