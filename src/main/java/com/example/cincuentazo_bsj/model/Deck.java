@@ -38,6 +38,10 @@ public class Deck {
         return cards.remove(cards.size() - 1);
     }
 
+    public void addCardsToBottom(List<Card> cardsToAdd) {
+        cards.addAll(0, cardsToAdd);
+    }
+
     public int size() {
         return cards.size();
     }
