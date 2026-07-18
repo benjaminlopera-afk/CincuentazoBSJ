@@ -6,12 +6,18 @@ import com.example.cincuentazo_bsj.model.HumanPlayer;
 import com.example.cincuentazo_bsj.model.Player;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.Random;
 
+/**
+ * Controlador de la vista de juego. Refleja en pantalla el estado del
+ * modelo {@link Game} y maneja la interacción del jugador humano
+ * (jugar carta -> tomar carta) y el turno automático de las máquinas.
+ */
 public class GameController {
 
     @FXML private VBox machinesBox;
@@ -19,8 +25,11 @@ public class GameController {
     @FXML private Label tableCardLabel;
     @FXML private Label deckCountLabel;
     @FXML private Label tableSumLabel;
+    @FXML private Button drawButton;
+    @FXML private Label messageLabel;
 
     private Game game;
+    private boolean awaitingHumanDraw = false;
 
     public void setGame(Game game) {
         this.game = game;
@@ -29,6 +38,7 @@ public class GameController {
         renderHumanHand();
         renderTable();
         renderDeckCount();
+        messageLabel.setText("Selecciona una carta para empezar a jugar.");
         triggerMachineTurnIfNeeded();
     }
 
@@ -57,16 +67,17 @@ public class GameController {
     private void renderHumanHand() {
         humanHandBox.getChildren().clear();
         Player human = game.getPlayers().get(0);
+        boolean isHumanTurn = game.getCurrentPlayer() == human;
 
         for (Card card : human.getHand()) {
             card.setFaceUp(true);
             Label cardLabel = new Label(card.getDisplayText());
             cardLabel.getStyleClass().add(card.isRedSuit() ? "card-face-red" : "card-face-black");
 
-            boolean playable = card.getBestValueFor(game.getTable().getSum()) != Integer.MIN_VALUE;
-            boolean isHumanTurn = game.getCurrentPlayer() == human;
+            boolean playable = isHumanTurn && !awaitingHumanDraw
+                    && card.getBestValueFor(game.getTable().getSum()) != Integer.MIN_VALUE;
 
-            if (playable && isHumanTurn) {
+            if (playable) {
                 cardLabel.getStyleClass().add("card-playable");
                 cardLabel.setOnMouseClicked(e -> onHumanCardSelected(card));
             } else {
@@ -91,9 +102,27 @@ public class GameController {
 
     private void onHumanCardSelected(Card card) {
         game.playCard(game.getPlayers().get(0), card);
-        game.advanceTurn();
+        awaitingHumanDraw = true;
+
+        messageLabel.setText("Jugaste " + card.getDisplayText() + ". Ahora toma una carta del mazo.");
+        drawButton.setDisable(false);
+
         renderHumanHand();
         renderTable();
+    }
+
+    @FXML
+    private void handleDrawCard() {
+        Player human = game.getPlayers().get(0);
+        Card drawnCard = game.drawCardForPlayer(human);
+
+        messageLabel.setText("Tomaste " + drawnCard.getDisplayText() + ".");
+        drawButton.setDisable(true);
+        awaitingHumanDraw = false;
+
+        game.advanceTurn();
+        renderHumanHand();
+        renderDeckCount();
         triggerMachineTurnIfNeeded();
     }
 
@@ -113,10 +142,14 @@ public class GameController {
             Platform.runLater(() -> {
                 if (chosen != null) {
                     game.playCard(current, chosen);
+                    Card drawnCard = game.drawCardForPlayer(current);
+                    messageLabel.setText(current.getName() + " jugó " + chosen.getDisplayText()
+                            + " y tomó una carta del mazo.");
                 }
                 game.advanceTurn();
                 renderMachineHands();
                 renderTable();
+                renderDeckCount();
                 triggerMachineTurnIfNeeded();
             });
         });
