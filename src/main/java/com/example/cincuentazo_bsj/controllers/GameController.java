@@ -1,5 +1,6 @@
 package com.example.cincuentazo_bsj.controllers;
 
+import com.example.cincuentazo_bsj.exceptions.NoPlayableCardException;
 import com.example.cincuentazo_bsj.model.Card;
 import com.example.cincuentazo_bsj.model.Game;
 import com.example.cincuentazo_bsj.model.HumanPlayer;
@@ -20,16 +21,28 @@ import java.util.Random;
  */
 public class GameController {
 
-    @FXML private VBox machinesBox;
-    @FXML private HBox humanHandBox;
-    @FXML private Label tableCardLabel;
-    @FXML private Label deckCountLabel;
-    @FXML private Label tableSumLabel;
-    @FXML private Button drawButton;
-    @FXML private Label messageLabel;
+    @FXML
+    private VBox machinesBox;
+    @FXML
+    private HBox humanHandBox;
+    @FXML
+    private Label tableCardLabel;
+    @FXML
+    private Label deckCountLabel;
+    @FXML
+    private Label tableSumLabel;
+    @FXML
+    private Button drawButton;
+    @FXML
+    private Label messageLabel;
+    @FXML
+    private Label timeLabel;
 
     private Game game;
     private boolean awaitingHumanDraw = false;
+
+    private volatile boolean gameRunning = true;
+    private final long gameStartMillis = System.currentTimeMillis();
 
     public void setGame(Game game) {
         this.game = game;
@@ -39,7 +52,56 @@ public class GameController {
         renderTable();
         renderDeckCount();
         messageLabel.setText("Selecciona una carta para empezar a jugar.");
-        triggerMachineTurnIfNeeded();
+        startClockThread();
+        beginTurn();
+    }
+
+    private void beginTurn() {
+        if (game.isGameOver()) {
+            endGame();
+            return;
+        }
+
+        Player current = game.getCurrentPlayer();
+        try {
+            game.validateHasPlayableCard(current);
+        } catch (NoPlayableCardException ex) {
+            handleElimination(current, ex);
+            return;
+        }
+
+        renderHumanHand();
+        if (current instanceof HumanPlayer) {
+            messageLabel.setText("Es tu turno. Selecciona una carta.");
+        } else {
+            triggerMachineTurn(current);
+        }
+    }
+
+    private void handleElimination(Player player, NoPlayableCardException ex) {
+        game.eliminatePlayer(player);
+        messageLabel.setText(ex.getMessage());
+        renderMachineHands();
+        renderHumanHand();
+        renderDeckCount();
+
+        if (game.isGameOver()) {
+            endGame();
+            return;
+        }
+        game.advanceTurn();
+        beginTurn();
+    }
+
+    private void endGame() {
+        gameRunning = false;
+        Player winner = game.getWinner();
+        String text = winner != null
+                ? "¡" + winner.getName() + " ha ganado la partida!"
+                : "La partida ha finalizado.";
+        messageLabel.setText(text);
+        drawButton.setDisable(true);
+        humanHandBox.getChildren().forEach(node -> node.setOnMouseClicked(null));
     }
 
     private void renderMachineHands() {
@@ -120,22 +182,21 @@ public class GameController {
         drawButton.setDisable(true);
         awaitingHumanDraw = false;
 
-        game.advanceTurn();
         renderHumanHand();
         renderDeckCount();
-        triggerMachineTurnIfNeeded();
+
+        game.advanceTurn();
+        beginTurn();
     }
 
-    private void triggerMachineTurnIfNeeded() {
-        Player current = game.getCurrentPlayer();
-        if (current instanceof HumanPlayer) return;
-
+    private void triggerMachineTurn(Player current) {
         Thread machineTurnThread = new Thread(() -> {
             try {
-                int delayMillis = 2000 + new Random().nextInt(2001); // 2 a 4 s
+                int delayMillis = 2000 + new Random().nextInt(2001);
                 Thread.sleep(delayMillis);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                return;
             }
 
             Card chosen = current.selectCard(game.getTable());
@@ -146,14 +207,37 @@ public class GameController {
                     messageLabel.setText(current.getName() + " jugó " + chosen.getDisplayText()
                             + " y tomó una carta del mazo.");
                 }
-                game.advanceTurn();
                 renderMachineHands();
                 renderTable();
                 renderDeckCount();
-                triggerMachineTurnIfNeeded();
+                game.advanceTurn();
+                beginTurn();
             });
         });
         machineTurnThread.setDaemon(true);
         machineTurnThread.start();
+    }
+
+    private void startClockThread() {
+        Thread clockThread = new Thread(() -> {
+            while (gameRunning) {
+                long elapsedSeconds = (System.currentTimeMillis() - gameStartMillis) / 1000;
+                Platform.runLater(() -> timeLabel.setText(formatElapsedTime(elapsedSeconds)));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
+        clockThread.setDaemon(true);
+        clockThread.start();
+    }
+
+    private String formatElapsedTime(long totalSeconds) {
+        long minutes = totalSeconds / 60;
+        long seconds = totalSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 }

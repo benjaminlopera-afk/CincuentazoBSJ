@@ -1,6 +1,7 @@
 package com.example.cincuentazo_bsj.model;
 
 import com.example.cincuentazo_bsj.exceptions.CincuentazoException;
+import com.example.cincuentazo_bsj.exceptions.NoPlayableCardException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,13 @@ public class Game {
                 .anyMatch(card -> card.getBestValueFor(table.getSum()) != Integer.MIN_VALUE);
     }
 
+    public void validateHasPlayableCard(Player player) throws NoPlayableCardException {
+        if (!hasPlayableCard(player)) {
+            throw new NoPlayableCardException(
+                    player.getName() + " no tiene cartas jugables y será eliminado. ");
+        }
+    }
+
     public void playCard(Player player, Card card) {
         int value = card.getBestValueFor(table.getSum());
         if (value == Integer.MIN_VALUE) {
@@ -91,8 +99,30 @@ public class Game {
         deck.shuffle();
     }
 
+    public void eliminatePlayer(Player player) {
+        player.setEliminated(true);
+        deck.addCardsToBottom(player.getHand());
+        player.getHand().clear();
+    }
+
+    public List<Player> getActivePlayers() {
+        return players.stream().filter(p -> !p.isEliminated()).toList();
+    }
+
+    public boolean isGameOver() {
+        return getActivePlayers().size() <= 1;
+    }
+
+    public Player getWinner() {
+        List<Player> active = getActivePlayers();
+        return active.size() == 1 ? active.get(0) : null;
+    }
+
     public void advanceTurn() {
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        int size = players.size();
+        do {
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        } while (players.get(currentPlayerIndex).isEliminated());
     }
 
     public Deck getDeck() { return deck; }
