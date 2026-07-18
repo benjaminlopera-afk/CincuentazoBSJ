@@ -6,8 +6,13 @@ package com.example.cincuentazo_bsj.exceptions;
  * Al ser checked, obliga a manejarla explícitamente en el controlador,
  * que es justo el punto donde se dispara la eliminación del jugador (HU-5).
  */
-
 public class NoPlayableCardException extends Exception {
+
+    /**
+     * Crea la excepción con un mensaje descriptivo del motivo de eliminación.
+     *
+     * @param message detalle del error.
+     */
     public NoPlayableCardException(String message) {
         super(message);
     }

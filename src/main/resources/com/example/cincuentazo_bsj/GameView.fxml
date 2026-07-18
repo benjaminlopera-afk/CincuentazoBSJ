@@ -1,45 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.Button?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.cincuentazo_bsj.controllers.GameController"
             styleClass="root-background"
             stylesheets="@../../../Styles.css"
-            prefWidth="759.0" prefHeight="549.0">
+            prefWidth="900.0" prefHeight="700.0">
 
     <top>
-        <VBox fx:id="machinesBox" alignment="CENTER" spacing="14">
-            <padding><Insets top="20" bottom="10"/></padding>
-        </VBox>
+        <HBox alignment="CENTER" spacing="30" styleClass="game-header">
+            <padding><Insets top="18" right="30" bottom="14" left="30"/></padding>
+            <Label text="♠ CINCUENTAZO ♥" styleClass="header-title" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="timeLabel" text="00:00" styleClass="header-badge"/>
+            <Label fx:id="deckCountLabel" text="Mazo: 0" styleClass="header-badge"/>
+        </HBox>
     </top>
 
     <center>
-        <VBox alignment="CENTER" spacing="8">
-            <Label text="MESA" styleClass="section-label"/>
-            <Label fx:id="tableCardLabel" styleClass="card-face-black table-card"/>
-            <Label fx:id="tableSumLabel" text="Suma: 0" styleClass="subtitle-label"/>
-            <Label fx:id="deckCountLabel" text="Mazo: 0" styleClass="subtitle-label"/>
-            <Label fx:id="timeLabel" text="00:00" styleClass="subtitle-label"/>
+        <VBox alignment="CENTER" spacing="24">
+            <padding><Insets top="10" bottom="10"/></padding>
+
+            <VBox fx:id="machinesBox" alignment="CENTER" spacing="18"/>
+
+            <VBox alignment="CENTER" spacing="10" styleClass="table-panel">
+                <Label text="MESA" styleClass="section-label"/>
+                <Label fx:id="tableCardLabel" styleClass="card-face-black table-card"/>
+                <Label fx:id="tableSumLabel" text="Suma: 0" styleClass="subtitle-label"/>
+            </VBox>
         </VBox>
     </center>
 
     <bottom>
-        <VBox alignment="CENTER" spacing="12">
-            <padding><Insets top="10" bottom="20"/></padding>
+        <VBox alignment="CENTER" spacing="14">
+            <padding><Insets top="10" bottom="24"/></padding>
 
-            <HBox fx:id="humanHandBox" alignment="CENTER" spacing="12"/>
+            <Label text="TU MANO" styleClass="section-label-small"/>
+            <HBox fx:id="humanHandBox" alignment="CENTER" spacing="14"/>
 
             <Button fx:id="drawButton" text="TOMAR CARTA DEL MAZO" disable="true"
                     onAction="#handleDrawCard" styleClass="draw-button"/>
 
-            <Label fx:id="messageLabel" styleClass="message-label" wrapText="true" maxWidth="680"/>
+            <Label fx:id="messageLabel" styleClass="message-label" wrapText="true" maxWidth="760"/>
+            <Label fx:id="eventLabel" styleClass="event-label" wrapText="true" maxWidth="760"/>
         </VBox>
     </bottom>
 
