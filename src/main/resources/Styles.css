@@ -34,7 +34,7 @@
     -fx-font-weight: bold;
 }
 
-/* --- Tarjetas de selección --- */
+/* --- Tarjetas de selección (HU-1) --- */
 .player-card {
     -fx-background-color: #1b1c33;
     -fx-background-radius: 14;
@@ -97,7 +97,7 @@
     -fx-opacity: 1.0;
 }
 
-/* ===== Vista de juego ===== */
+/* ===== Vista de juego (HU-2) ===== */
 
 .machine-column {
     -fx-alignment: center;
@@ -139,4 +139,20 @@
     -fx-min-width: 68px;
     -fx-min-height: 94px;
     -fx-font-size: 22px;
+}
+
+/* ===== Interacción de mano humana (HU-3) ===== */
+
+.card-playable {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(242,177,52,0.6), 8, 0.4, 0, 0);
+}
+
+.card-playable:hover {
+    -fx-border-color: #f2b134;
+    -fx-border-width: 2.5;
+}
+
+.card-disabled {
+    -fx-opacity: 0.35;
 }

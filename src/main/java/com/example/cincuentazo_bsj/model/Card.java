@@ -25,6 +25,24 @@ public class Card {
         };
     }
 
+    public int[] getPossibleValues() {
+        return switch (rank) {
+            case "9" -> new int[]{0};
+            case "A" -> new int[]{10, 1};
+            case "J", "Q", "K" -> new int[]{-10};
+            default -> new int[]{Integer.parseInt(rank)};
+        };
+    }
+
+    public int getBestValueFor(int currentSum) {
+        for (int value : getPossibleValues()) {
+            if (currentSum + value <= 50) {
+                return value;
+            }
+        }
+        return Integer.MIN_VALUE;
+    }
+
     public String getDisplayText() {
         String symbol = switch (suit) {
             case "Corazones" -> "♥";
