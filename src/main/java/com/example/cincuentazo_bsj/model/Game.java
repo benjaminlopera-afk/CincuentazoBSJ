@@ -66,6 +66,31 @@ public class Game {
         table.setSum(table.getSum() + value);
     }
 
+    public void playTurn(Player player, Card card) {
+        playCard(player, card);
+        drawCardForPlayer(player);
+    }
+
+    public Card drawCardForPlayer(Player player) {
+        if (deck.isEmpty()) {
+            reshuffleDeckFromTable();
+        }
+        Card drawnCard = deck.drawCard();
+        player.getHand().add(drawnCard);
+        return drawnCard;
+    }
+
+    private void reshuffleDeckFromTable() {
+        if (table.getPlayedCards().size() <= 1) {
+            throw new CincuentazoException("No hay suficientes cartas en la mesa para rearmar el mazo.");
+        }
+        Card lastPlayed = table.getPlayedCards().remove(table.getPlayedCards().size() - 1);
+        deck.getCards().addAll(table.getPlayedCards());
+        table.getPlayedCards().clear();
+        table.getPlayedCards().add(lastPlayed);
+        deck.shuffle();
+    }
+
     public void advanceTurn() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }

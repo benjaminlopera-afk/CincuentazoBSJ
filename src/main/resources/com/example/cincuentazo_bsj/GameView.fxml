@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Button?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.cincuentazo_bsj.controllers.GameController"
@@ -29,9 +30,16 @@
     </center>
 
     <bottom>
-        <HBox fx:id="humanHandBox" alignment="CENTER" spacing="12">
+        <VBox alignment="CENTER" spacing="12">
             <padding><Insets top="10" bottom="20"/></padding>
-        </HBox>
+
+            <HBox fx:id="humanHandBox" alignment="CENTER" spacing="12"/>
+
+            <Button fx:id="drawButton" text="TOMAR CARTA DEL MAZO" disable="true"
+                    onAction="#handleDrawCard" styleClass="draw-button"/>
+
+            <Label fx:id="messageLabel" styleClass="message-label" wrapText="true" maxWidth="680"/>
+        </VBox>
     </bottom>
 
 </BorderPane>

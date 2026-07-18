@@ -156,3 +156,31 @@
 .card-disabled {
     -fx-opacity: 0.35;
 }
+
+.draw-button {
+    -fx-background-color: #0f3460;
+    -fx-text-fill: #f4f4f8;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 24;
+    -fx-padding: 10 30 10 30;
+    -fx-cursor: hand;
+    -fx-border-color: #f2b134;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 24;
+}
+
+.draw-button:hover:enabled {
+    -fx-background-color: #14417d;
+}
+
+.draw-button:disabled {
+    -fx-opacity: 0.3;
+    -fx-border-color: #2c2d4a;
+}
+
+.message-label {
+    -fx-text-fill: #f2b134;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
