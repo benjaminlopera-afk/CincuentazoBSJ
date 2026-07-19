@@ -1,10 +1,12 @@
 package com.example.cincuentazo_bsj.controllers;
 
+import com.example.cincuentazo_bsj.applications.CincuentazoApplication;
 import com.example.cincuentazo_bsj.exceptions.NoPlayableCardException;
 import com.example.cincuentazo_bsj.model.Card;
 import com.example.cincuentazo_bsj.model.Game;
 import com.example.cincuentazo_bsj.model.HumanPlayer;
 import com.example.cincuentazo_bsj.model.Player;
+import com.example.cincuentazo_bsj.utils.Paths;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -46,6 +48,9 @@ public class GameController {
     private Label eventLabel;
     @FXML
     private Label timeLabel;
+
+    @FXML
+    private Button restartButton;
 
     private Game game;
 
@@ -138,8 +143,9 @@ public class GameController {
     }
 
     /**
-     * Finaliza la partida (HU-6): detiene el cronómetro, anuncia al ganador
-     * y bloquea la interacción con la mano del jugador humano.
+     * Finaliza la partida (HU-6): detiene el cronómetro, anuncia al ganador,
+     * bloquea la interacción con la mano del jugador humano y habilita el
+     * botón para volver a la pantalla de inicio.
      */
     private void endGame() {
         gameRunning = false;
@@ -151,6 +157,9 @@ public class GameController {
         messageLabel.setText("");
         drawButton.setDisable(true);
         humanHandBox.getChildren().forEach(node -> node.setOnMouseClicked(null));
+
+        restartButton.setVisible(true);
+        restartButton.setManaged(true);
     }
 
     /**
@@ -306,6 +315,17 @@ public class GameController {
         game.advanceTurn();
         beginTurn();
     }
+
+    /**
+     * Vuelve a la pantalla de inicio para permitir iniciar una nueva partida,
+     * usando {@link CincuentazoApplication#setScene} en vez de manejar el
+     * cambio de escena manualmente.
+     */
+    @FXML
+    private void handleRestart() {
+        CincuentazoApplication.setScene(Paths.START_VIEW, "Cincuentazo");
+    }
+
 
     /**
      * Ejecuta el turno de un jugador máquina en un hilo separado del hilo

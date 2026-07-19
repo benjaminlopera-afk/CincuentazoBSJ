@@ -49,6 +49,9 @@
 
             <Label fx:id="messageLabel" styleClass="message-label" wrapText="true" maxWidth="760"/>
             <Label fx:id="eventLabel" styleClass="event-label" wrapText="true" maxWidth="760"/>
+
+            <Button fx:id="restartButton" text="VOLVER AL INICIO" visible="false" managed="false"
+                    onAction="#handleRestart" styleClass="restart-button"/>
         </VBox>
     </bottom>
 

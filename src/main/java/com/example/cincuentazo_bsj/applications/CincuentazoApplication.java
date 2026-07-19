@@ -10,25 +10,49 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * Punto de entrada de la aplicación JavaFX. Carga la vista de inicio
- * y arranca la ventana principal.
+ * Clase principal de la aplicación Cincuentazo.
+ * Gestiona la ventana principal y centraliza el cambio de escenas para
+ * que los controladores no tengan que manejar {@code FXMLLoader}, {@code Scene}
+ * ni {@code Stage} directamente.
  */
 public class CincuentazoApplication extends Application {
 
+    /** Ventana principal de la aplicación. */
+    private static Stage stageWindow;
+
     /**
-     * Carga {@code StartView.fxml} y muestra la ventana principal del juego.
+     * Inicializa y muestra la ventana principal con la pantalla de inicio.
      *
-     * @param stage ventana principal proporcionada por JavaFX.
-     * @throws IOException si no se puede cargar el archivo FXML de inicio.
+     * @param stage escenario principal proporcionado por JavaFX.
      */
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(CincuentazoApplication.class.getResource(Paths.START_VIEW));
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
-        stage.setTitle("Cincuentazo");
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage stage) {
+        stageWindow = stage;
+        setScene(Paths.START_VIEW, "Cincuentazo");
+    }
+
+    /**
+     * Cambia la escena actual de la ventana principal y devuelve el
+     * controlador asociado a la vista cargada, para que quien la invoque
+     * pueda configurarlo (por ejemplo, pasarle el {@code Game} en curso).
+     *
+     * @param path  ruta del archivo FXML a cargar.
+     * @param title título que tomará la ventana con la nueva vista.
+     * @param <T>   tipo del controlador declarado en el FXML.
+     * @return el controlador de la vista recién cargada.
+     * @throws RuntimeException si no se puede cargar la vista indicada.
+     */
+    public static <T> T setScene(String path, String title) {
+        FXMLLoader loader = new FXMLLoader(CincuentazoApplication.class.getResource(path));
+        try {
+            Parent root = loader.load();
+            stageWindow.setScene(new Scene(root));
+            stageWindow.setTitle(title);
+            stageWindow.show();
+            return loader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException("No se pudo cargar la vista: " + path, e);
+        }
     }
 
     /**
